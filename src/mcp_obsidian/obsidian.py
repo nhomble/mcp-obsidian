@@ -11,6 +11,7 @@ class Obsidian():
             host: str = str(os.getenv('OBSIDIAN_HOST', '127.0.0.1')),
             port: int = int(os.getenv('OBSIDIAN_PORT', '27124')),
             verify_ssl: bool = False,
+            ca_cert_path: str = os.getenv('OBSIDIAN_CA_CERT_PATH')
         ):
         self.api_key = api_key
         
@@ -21,7 +22,15 @@ class Obsidian():
 
         self.host = host
         self.port = port
-        self.verify_ssl = verify_ssl
+        
+        # Handle SSL verification configuration
+        if ca_cert_path:
+            # If custom CA cert path is provided, use it for verification
+            self.verify_ssl = os.path.expanduser(ca_cert_path)
+        else:
+            # Use the provided verify_ssl boolean value
+            self.verify_ssl = verify_ssl
+            
         self.timeout = (3, 6)
 
     def get_base_url(self) -> str:
