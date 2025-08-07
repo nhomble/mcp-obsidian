@@ -24,6 +24,9 @@ logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger("mcp-obsidian")
 
 api_key = os.getenv("OBSIDIAN_API_KEY")
+# or readwrite
+tool_mode = os.getenv("OBSIDIAN_TOOL_MODE", "readonly").lower()
+
 if not api_key:
     raise ValueError(f"OBSIDIAN_API_KEY environment variable required. Working directory: {os.getcwd()}")
 
@@ -45,15 +48,16 @@ add_tool_handler(tools.ListFilesInDirToolHandler())
 add_tool_handler(tools.ListFilesInVaultToolHandler())
 add_tool_handler(tools.GetFileContentsToolHandler())
 add_tool_handler(tools.SearchToolHandler())
-add_tool_handler(tools.PatchContentToolHandler())
-add_tool_handler(tools.AppendContentToolHandler())
-add_tool_handler(tools.PutContentToolHandler())
-add_tool_handler(tools.DeleteFileToolHandler())
 add_tool_handler(tools.ComplexSearchToolHandler())
-add_tool_handler(tools.BatchGetFileContentsToolHandler())
-add_tool_handler(tools.PeriodicNotesToolHandler())
 add_tool_handler(tools.RecentPeriodicNotesToolHandler())
 add_tool_handler(tools.RecentChangesToolHandler())
+add_tool_handler(tools.PeriodicNotesToolHandler())
+if tool_mode == "readwrite":
+    add_tool_handler(tools.PatchContentToolHandler())
+    add_tool_handler(tools.AppendContentToolHandler())
+    add_tool_handler(tools.PutContentToolHandler())
+    add_tool_handler(tools.DeleteFileToolHandler())
+    add_tool_handler(tools.BatchGetFileContentsToolHandler())
 
 @app.list_tools()
 async def list_tools() -> list[Tool]:
