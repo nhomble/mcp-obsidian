@@ -58,6 +58,8 @@ Sometimes Claude has issues detecting the location of uv / uvx. You can use `whi
 OBSIDIAN_API_KEY=your_api_key_here
 OBSIDIAN_HOST=your_obsidian_host
 OBSIDIAN_PORT=your_obsidian_port
+OBSIDIAN_TOOL_MODE=`readonly` or `readwrite`
+OBSIDIAN_CA_CERT_PATH=path/to/custom/cacert
 ```
 
 Note:
